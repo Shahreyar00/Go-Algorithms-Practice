@@ -12,7 +12,7 @@ import (
 var (
 	clients     = make(map[string][]time.Time) // Track all request times for each IP
 	clientsLock = &sync.Mutex{}
-	rateLimit   = 5           // 5 requests
+	rateLimit   = 10
 	timeWindow  = time.Minute // per minute
 )
 

@@ -7,7 +7,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var MongoURI string
+var (
+	MongoURI  string
+	JWTSecret string
+)
 
 func LoadConfig() {
 	err := godotenv.Load()
@@ -18,5 +21,10 @@ func LoadConfig() {
 	MongoURI = os.Getenv("MONGO_URI")
 	if MongoURI == "" {
 		log.Fatal("MONGO_URI is not set in .env")
+	}
+
+	JWTSecret = os.Getenv("JWT_SECRET")
+	if JWTSecret == "" {
+		log.Fatal("JWT_SECRET is not set in .env")
 	}
 }
