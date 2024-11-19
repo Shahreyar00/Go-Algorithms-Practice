@@ -26,13 +26,16 @@ func main() {
 
 	// Initialize repositories and controllers
 	userRepo := repository.NewUserRepository(db)
+	productRepo := repository.NewProductRepository(db)
+
 	userController := controllers.UserController{Repo: userRepo}
 	authController := controllers.NewAuthController(userRepo)
+	productController := controllers.NewProductController(productRepo)
 
 	// Setup routes
 	r := gin.Default()
 	r.Use(middleware.Logger())
-	routes.SetupRoutes(r, &userController, authController)
+	routes.SetupRoutes(r, &userController, authController, productController)
 
 	// Run server
 	if err := r.Run(":8080"); err != nil {

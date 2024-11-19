@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(r *gin.Engine, userController *controllers.UserController, authController *controllers.AuthController) {
+func SetupRoutes(r *gin.Engine, userController *controllers.UserController, authController *controllers.AuthController, productController *controllers.ProductController) {
 	r.Use(middleware.RateLimitMiddleware())
 
 	// Auth routes
@@ -24,5 +24,17 @@ func SetupRoutes(r *gin.Engine, userController *controllers.UserController, auth
 		userRoutes.GET("/:id", userController.GetUser)
 		userRoutes.PUT("/:id", userController.UpdateUser)
 		userRoutes.DELETE("/:id", userController.DeleteUser)
+	}
+
+	// Product routes
+	productRoutes := r.Group("/products")
+	productRoutes.Use(middleware.AuthMiddleware())
+	{
+		productRoutes.POST("/", productController.CreateProduct)
+		productRoutes.GET("/:id", productController.GetProduct)
+		productRoutes.GET("/", productController.GetProducts)
+		productRoutes.GET("/filter", productController.GetProductsByCategoryOrType)
+		productRoutes.PUT("/:id", productController.UpdateProduct)
+		productRoutes.DELETE("/:id", productController.DeleteProduct)
 	}
 }
